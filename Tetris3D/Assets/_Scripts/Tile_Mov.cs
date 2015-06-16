@@ -4,6 +4,7 @@ using System.Collections;
 public class Tile_Mov : MonoBehaviour {
 
 	public GameObject parent;
+	//public float limit;
 	private bool isMoving = true;
 	private bool isWorking = true;
 
@@ -37,9 +38,9 @@ public class Tile_Mov : MonoBehaviour {
 	}
 
 	void MovHorizontal(){
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && gameObject.transform.position.x != -4.5f) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow)/* && gameObject.transform.position.x != -limit*/) {
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x - 1, gameObject.transform.position.y, gameObject.transform.position.z);
-		} else if(Input.GetKeyDown (KeyCode.RightArrow) && gameObject.transform.position.x != 4.5f){
+		} else if(Input.GetKeyDown (KeyCode.RightArrow)/* && gameObject.transform.position.x != limit*/){
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x + 1, gameObject.transform.position.y, gameObject.transform.position.z);
 		}
 	}
