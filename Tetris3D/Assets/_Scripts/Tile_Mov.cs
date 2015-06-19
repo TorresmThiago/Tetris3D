@@ -3,29 +3,23 @@ using System.Collections;
 
 public class Tile_Mov : MonoBehaviour {
 
-	public GameObject parent;
-	//public float limit;
+	public Spawner spawner;
 	private bool isMoving = true;
-	private bool isWorking = true;
 
 	IEnumerator MovVertical (){
-		if (isMoving) {
+		if(isMoving)
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - 1, gameObject.transform.position.z);
 			yield return new WaitForSeconds (1.5f);
 			StartCoroutine (MovVertical ());
-		}
-	}
-
-	IEnumerator BlockMov(){
-		yield return new WaitForSeconds (0.7f);
-		this.transform.parent = parent.transform;
-		isWorking = false;
 	}
 
 	void OnCollisionEnter(Collision col){
 		if(col.gameObject.tag == "Board"){
+			this.transform.parent = col.gameObject.transform;
+			gameObject.tag = "Board";
+			spawner.spawnNext();
+			gameObject.GetComponent<Tile_Mov>().enabled = false;
 			isMoving = false;
-			StartCoroutine (BlockMov ());
 		}
 	}
 
@@ -38,9 +32,9 @@ public class Tile_Mov : MonoBehaviour {
 	}
 
 	void MovHorizontal(){
-		if (Input.GetKeyDown (KeyCode.LeftArrow)/* && gameObject.transform.position.x != -limit*/) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x - 1, gameObject.transform.position.y, gameObject.transform.position.z);
-		} else if(Input.GetKeyDown (KeyCode.RightArrow)/* && gameObject.transform.position.x != limit*/){
+		} else if(Input.GetKeyDown (KeyCode.RightArrow)){
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x + 1, gameObject.transform.position.y, gameObject.transform.position.z);
 		}
 	}
@@ -50,9 +44,7 @@ public class Tile_Mov : MonoBehaviour {
 	}
 
 	void Update () {
-		if (isWorking) {
-			rotate ();
-			MovHorizontal ();
-		}
+		rotate ();
+		MovHorizontal ();
 	}
 }
