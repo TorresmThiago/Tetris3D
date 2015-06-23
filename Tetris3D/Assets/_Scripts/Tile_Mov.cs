@@ -7,10 +7,9 @@ public class Tile_Mov : MonoBehaviour {
 	private bool isMoving = true;
 
 	IEnumerator MovVertical (){
-		if(isMoving)
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - 1, gameObject.transform.position.z);
-			yield return new WaitForSeconds (1.5f);
-			StartCoroutine (MovVertical ());
+		gameObject.transform.position = new Vector3 (gameObject.transform.position.x, (int)gameObject.transform.position.y - 1, gameObject.transform.position.z);
+		yield return new WaitForSeconds (1.5f);
+		StartCoroutine (MovVertical ());
 	}
 
 	void OnCollisionEnter(Collision col){
@@ -18,8 +17,8 @@ public class Tile_Mov : MonoBehaviour {
 			this.transform.parent = col.gameObject.transform;
 			gameObject.tag = "Board";
 			spawner.spawnNext();
-			gameObject.GetComponent<Tile_Mov>().enabled = false;
-			isMoving = false;
+			Destroy(rigidbody);
+			Destroy(gameObject.GetComponent<Tile_Mov>());
 		}
 	}
 

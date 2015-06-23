@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour {
 
 	public void spawnNext(){
 		int index = Random.Range (0, groups.Length);
-		Instantiate (groups [index], gameObject.transform.position, Quaternion.identity);
+		Instantiate (groups [index], new Vector3(0, (int)9, -5.5f), Quaternion.identity);
 	}
 
 	void Start () {
