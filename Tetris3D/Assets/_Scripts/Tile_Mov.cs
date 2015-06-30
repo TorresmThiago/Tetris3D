@@ -4,21 +4,24 @@ using System.Collections;
 public class Tile_Mov : MonoBehaviour {
 
 	public Spawner spawner;
-	private bool isMoving = true;
 
 	IEnumerator MovVertical (){
 		gameObject.transform.position = new Vector3 (gameObject.transform.position.x, (int)gameObject.transform.position.y - 1, gameObject.transform.position.z);
-		yield return new WaitForSeconds (1.5f);
+		yield return new WaitForSeconds (0.25f);
 		StartCoroutine (MovVertical ());
 	}
 
 	void OnCollisionEnter(Collision col){
 		if(col.gameObject.tag == "Board"){
 			this.transform.parent = col.gameObject.transform;
-			gameObject.tag = "Board";
+			foreach(Transform child in transform){
+				child.gameObject.tag = "Board";
+				gameObject.tag = "Board";
+			}
 			spawner.spawnNext();
-			Destroy(rigidbody);
+			Destroy(gameObject.GetComponent<Rigidbody>());
 			Destroy(gameObject.GetComponent<Tile_Mov>());
+
 		}
 	}
 
@@ -38,6 +41,12 @@ public class Tile_Mov : MonoBehaviour {
 		}
 	}
 
+	void AdjustToInt(){
+		int adjustPosX = Mathf.FloorToInt(transform.position.x);
+		int adjustPosY = Mathf.FloorToInt(transform.position.y);
+		gameObject.transform.position = new Vector3 (adjustPosX, adjustPosY, transform.position.z);
+	}
+
 	void Start () {
 		StartCoroutine (MovVertical ());
 	}
@@ -45,5 +54,9 @@ public class Tile_Mov : MonoBehaviour {
 	void Update () {
 		rotate ();
 		MovHorizontal ();
+	}
+
+	void LateUpdate(){
+		AdjustToInt ();
 	}
 }
