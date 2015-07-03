@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\_Scripts\Rotate_Obj.cs" />
      <Compile Include="Assets\_Scripts\Spawner.cs" />
+     <Compile Include="Assets\_Scripts\Tile_Col.cs" />
      <Compile Include="Assets\_Scripts\Tile_Mov.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.2/UnityEngine.UI.dll</HintPath>
