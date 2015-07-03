@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Rotate_Obj : MonoBehaviour {
+public class Board_Rotate : MonoBehaviour {
 
 	private float rotLeft;
 	private float rotRight;
