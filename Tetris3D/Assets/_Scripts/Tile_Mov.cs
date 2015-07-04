@@ -9,7 +9,6 @@ public class Tile_Mov : MonoBehaviour {
 		StartCoroutine (MovVertical ());
 	}
 
-
 	void rotate(){
 		if (Input.GetKeyDown (KeyCode.Z)) {
 			gameObject.transform.Rotate (0, 0, -90);
