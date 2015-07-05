@@ -5,9 +5,10 @@ public class Spawner : MonoBehaviour {
 
 	public GameObject[] groups;
 
-	public void spawnNext(){
-		int index = Random.Range (0, groups.Length);
-		Instantiate (groups [index]);
+	public int spawnNext(GameObject[] pieces){
+		int index = Random.Range (0, pieces.Length);
+        Instantiate(pieces [index]);
+        return index;
 	}
 
     public void adjToGrid(GameObject group, int facing, int[, ,] grid) {
@@ -17,8 +18,4 @@ public class Spawner : MonoBehaviour {
             grid[facing, child_row, child_column] = 1;
         }
     }
-
-	void Start () {
-        spawnNext();
-	}
 }

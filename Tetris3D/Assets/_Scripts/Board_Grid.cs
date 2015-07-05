@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Board_Grid : MonoBehaviour {
 
-    /* Three-dimensional array with specified dimensions [Page, Row, Column]
+    /* 
+      
+      Three-dimensional array with specified dimensions [Page, Row, Column]
      
       [0,0,0]  [0,0,1]  [0,0,2]  |  [1,0,0]  [1,0,1]  [1,0,2]
                                  | 
@@ -14,7 +16,7 @@ public class Board_Grid : MonoBehaviour {
      */
 
     private int[, ,] grid;
-    
+
 	public int[, ,] genGrid(){
         grid = new int[4, 24, 12];
         grid = setGrid(grid);

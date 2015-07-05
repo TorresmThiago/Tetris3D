@@ -8,6 +8,8 @@ public class Board_Rotate : MonoBehaviour {
 	private bool isRotating;
 	private string direction;
 
+    public int isFacing = 0;
+
 	void Swing(float rot)
 	{   
 		Quaternion newRotation = Quaternion.AngleAxis (rot, Vector3.up);
@@ -94,9 +96,17 @@ public class Board_Rotate : MonoBehaviour {
 			if (Input.GetKey (KeyCode.A)) {
 				direction = "left";
 				isRotating = true;
+                isFacing++;
+                if (isFacing > 3) {
+                    isFacing = 0;
+                }
             } else if (Input.GetKey(KeyCode.S)) {
 				direction = "right";
 				isRotating = true;
+                isFacing--;
+                if (isFacing < 0) {
+                    isFacing = 3;
+                }
             }
 		} else if(isRotating) {
 			Rotate(direction);

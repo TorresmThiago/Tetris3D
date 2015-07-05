@@ -12,7 +12,7 @@ public class Tile_Col : MonoBehaviour {
 				child.gameObject.tag = "Board";
 				gameObject.tag = "Board";
 			}
-			spawner.spawnNext();
+			//spawner.spawnNext();
 			Destroy(gameObject.GetComponent<Rigidbody>());
 			Destroy(gameObject.GetComponent<Tile_Mov>());
 			

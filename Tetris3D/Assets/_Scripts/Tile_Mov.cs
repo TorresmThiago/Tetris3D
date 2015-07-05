@@ -4,9 +4,16 @@ using System.Collections;
 public class Tile_Mov : MonoBehaviour {
 
     public int[, ,] board;
-    public int boardFacing;
+    public GameController gameController;
+    public Board_Rotate boardRotation;
+    public int boardFacing = 0;
+    public bool hasStoped = false; 
 
-    void eraseInGrid(int[, ,] grid, int facing) { 
+    public int[, ,] getGrid() {
+        return board;
+    }
+
+    public void eraseInGrid(int[, ,] grid, int facing) { 
         foreach (Transform child in transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
@@ -14,7 +21,7 @@ public class Tile_Mov : MonoBehaviour {
         }
     }
 
-    void appearInGrid (int[, ,] grid, int facing) {
+    public void appearInGrid (int[, ,] grid, int facing) {
         foreach (Transform child in transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
@@ -22,11 +29,11 @@ public class Tile_Mov : MonoBehaviour {
         }
     }
 
-    int[, ,] setGrid(int[, ,] grid) {
+    public int[, ,] setGrid(int[, ,] grid) {
         return grid;
     }
 
-    bool canRotate(int[, ,] grid, int facing, string direction) {
+    public bool canRotate(int[, ,] grid, int facing, string direction) {
         //Erase the group position in grid so it won't hit itself
         eraseInGrid(grid, facing);
         
@@ -67,7 +74,7 @@ public class Tile_Mov : MonoBehaviour {
         return true;
     }
 
-    bool canMoveVertical(int[, ,] grid, int facing) {
+    public bool canMoveVertical(int[, ,] grid, int facing) {
         eraseInGrid(grid, facing);
 
         foreach (Transform child in transform) {
@@ -84,7 +91,7 @@ public class Tile_Mov : MonoBehaviour {
         return true;
     }
 
-    bool canMoveHorizontal(int[, ,] grid, int facing, string direction) {
+    public bool canMoveHorizontal(int[, ,] grid, int facing, string direction) {
         eraseInGrid(grid, facing);
 
         foreach (Transform child in transform) {
@@ -101,21 +108,36 @@ public class Tile_Mov : MonoBehaviour {
         return true;
     }
 
-	IEnumerator MovVertical (){
+    public void rotateObject() {
+        if (Input.GetKeyDown(KeyCode.Z) && canRotate(board, boardFacing, "left")) {
+            eraseInGrid(board, boardFacing);
+            transform.Rotate(0, 0, -90);
+            appearInGrid(board, boardFacing);
+        } else if (Input.GetKeyDown(KeyCode.X) && canRotate(board, boardFacing, "right")) {
+            eraseInGrid(board, boardFacing);
+            transform.Rotate(0, 0, 90);
+            appearInGrid(board, boardFacing);
+        }
+    }
+
+    public IEnumerator MovVertical (){
         yield return new WaitForSeconds(0.25f);
         if (canMoveVertical(board, boardFacing)) {
             eraseInGrid(board, boardFacing);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 1, gameObject.transform.position.z);
             appearInGrid(board, boardFacing);
         } else {
-            setGrid(board);
-            Destroy(gameObject.GetComponent<Tile_Mov>());
+            gameObject.tag = "Board";
+            foreach (Transform child in transform) {
+                child.tag = "Board";
+            }
+            hasStoped = true;
         }
 		
 		StartCoroutine (MovVertical ());
 	}
 
-    void MovHorizontal() { 
+    public void MovHorizontal() { 
 		if (Input.GetKeyDown (KeyCode.LeftArrow) && canMoveHorizontal(board, boardFacing, "left")) {
             eraseInGrid(board, boardFacing);
 			gameObject.transform.position = new Vector3 (gameObject.transform.position.x - 1, gameObject.transform.position.y, gameObject.transform.position.z);
@@ -126,4 +148,16 @@ public class Tile_Mov : MonoBehaviour {
             appearInGrid(board, boardFacing);
         }
 	}
+
+    void Start() {
+        board = gameController.getGrid();
+        boardFacing = boardRotation.isFacing; 
+        StartCoroutine(MovVertical());
+    }
+
+    void Update() {
+        boardFacing = boardRotation.isFacing;
+        rotateObject();
+        MovHorizontal();
+    }
 }
