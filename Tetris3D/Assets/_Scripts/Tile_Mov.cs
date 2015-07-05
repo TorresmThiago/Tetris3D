@@ -24,6 +24,26 @@ public class Tile_Mov : MonoBehaviour {
         }
     }
 
+    bool canRotate(int[, ,] grid, int facing, string direction) { //EDIT
+        eraseInGrid(grid, facing);
+        //int desiredColumn = direction == "left" ? transform.Rotate(0,0,90) : transform.Rotate(0,0,-90);
+        transform.Rotate(0, 0, 90);
+
+        foreach (Transform child in transform) {
+            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
+            if (grid[facing, actualRow, actualColumn] == 1) {
+                //int desiredColumn = direction == "left" ? transform.Rotate(0,0,-90) : transform.Rotate(0,0,90);
+                transform.Rotate(0, 0, -90);
+                return false;
+            }
+        }
+
+        //int desiredColumn = direction == "left" ? transform.Rotate(0,0,-90) : transform.Rotate(0,0,90);
+        transform.Rotate(0, 0, 90);
+        return true;
+    }
+
     bool canMoveVertical(int[, ,] grid, int facing) {
         eraseInGrid(grid, facing);
 
@@ -32,6 +52,7 @@ public class Tile_Mov : MonoBehaviour {
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             int desiredRow = actualRow--;
             if (grid[facing, desiredRow, actualColumn] == 1) {
+                appearInGrid(grid, facing);
                 return false;
             }
         }
@@ -54,6 +75,7 @@ public class Tile_Mov : MonoBehaviour {
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             int desiredColumn = direction == "left" ? desiredColumn = actualColumn-- : desiredColumn = actualColumn++;
             if (grid[facing, actualRow, desiredColumn] == 1) {
+                appearInGrid(grid, facing);
                 return false;
             }
         }
