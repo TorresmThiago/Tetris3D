@@ -27,7 +27,7 @@ public class Board_Grid : MonoBehaviour {
         for (int i = 0; i < Grid.GetLength(0); i++) {
             for (int j = 0; j < Grid.GetLength(1); j++) {
                 for (int k = 0; k < Grid.GetLength(2); k++) {
-                    if (((j == 0) || (k == 0)) || ((j == Grid.GetLength(1)) || (k == Grid.GetLength(2)))) {
+                    if (((j == 0) || (k == 0)) || ((j == Grid.GetLength(1) - 1) || (k == Grid.GetLength(2) - 1))) {
                         Grid[i, j, k] = 1;
                     } else {
                         Grid[i, j, k] = 0;

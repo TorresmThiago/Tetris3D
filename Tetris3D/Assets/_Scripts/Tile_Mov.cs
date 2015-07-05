@@ -87,7 +87,12 @@ public class Tile_Mov : MonoBehaviour {
         foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-            int desiredColumn = direction == "left" ? desiredColumn = actualColumn-- : desiredColumn = actualColumn++;
+            int desiredColumn;
+            if (direction == "left") {
+                desiredColumn = actualColumn - 1;
+            } else {
+                desiredColumn = actualColumn + 1;
+            }
             if (grid[facing, actualRow, desiredColumn] == 1) {
                 appearInGrid(grid, facing, group);
                 return false;
@@ -127,15 +132,15 @@ public class Tile_Mov : MonoBehaviour {
 		StartCoroutine (MovVertical (group));
 	}
 
-    public void MovHorizontal(GameObject group) { 
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && canMoveHorizontal(board, boardFacing, "left", group)) {
-            eraseInGrid(board, boardFacing, group);
+    public void MovHorizontal(GameObject group, int[, ,] grid, int facing) {
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && canMoveHorizontal(grid, facing, "left", group)) {
+            eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x - 1, group.transform.position.y, group.transform.position.z);
-            appearInGrid(board, boardFacing, group);
-        } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(board, boardFacing, "right", group)) {
-            eraseInGrid(board, boardFacing, group);
+            appearInGrid(grid, facing, group);
+        } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(grid, facing, "right", group)) {
+            eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x + 1, group.transform.position.y, group.transform.position.z);
-            appearInGrid(board, boardFacing, group);
+            appearInGrid(grid, facing, group);
         }
 	}
 }

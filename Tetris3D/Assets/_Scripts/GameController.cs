@@ -27,14 +27,15 @@ public class GameController : MonoBehaviour {
         Spawner.GetComponent<Spawner>().adjToGrid(groups[groupAdj], facing, board);
     }
 
+    //Just in case.  void FixedUpdate() { }
+
 	void Update () {
         facing = Board.isFacing;
         tiles = GameObject.FindGameObjectWithTag("Piece");
+        TileManager.MovHorizontal(tiles, board, facing);
 	}
 
     void LateUpdate() {
-        if (tiles.GetComponent<Tile_Mov>().hasStoped) {
-            Destroy(tiles.GetComponent<Tile_Mov>());
-        }
+        
     }
 }
