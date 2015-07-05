@@ -7,6 +7,7 @@ public class Board_Rotate : MonoBehaviour {
 	private float rotRight;
 	private bool isRotating;
 	private string direction;
+    private int isFacing;
 
 	void Swing(float rot)
 	{   
@@ -91,13 +92,17 @@ public class Board_Rotate : MonoBehaviour {
 	void Update (){
 
 		if (!isRotating) {
-			if (Input.GetKey (KeyCode.C)) {
+			if (Input.GetKey (KeyCode.A)) {
 				direction = "left";
 				isRotating = true;
-			} else if (Input.GetKey (KeyCode.V)) {
+                isFacing--;
+                if (isFacing < 0) isFacing = 3;
+            } else if (Input.GetKey(KeyCode.S)) {
 				direction = "right";
 				isRotating = true;
-			}
+                isFacing++;
+                if (isFacing > 3) isFacing = 0;
+            }
 		} else if(isRotating) {
 			Rotate(direction);
 			FixAngle(direction);

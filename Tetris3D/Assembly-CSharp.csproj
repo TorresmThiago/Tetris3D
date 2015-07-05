@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\_Scripts\Board_Grid.cs" />
      <Compile Include="Assets\_Scripts\Board_Rotate.cs" />
+     <Compile Include="Assets\_Scripts\GameController.cs" />
      <Compile Include="Assets\_Scripts\Spawner.cs" />
      <Compile Include="Assets\_Scripts\Tile_Col.cs" />
      <Compile Include="Assets\_Scripts\Tile_Mov.cs" />

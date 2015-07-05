@@ -3,18 +3,15 @@ using System.Collections;
 
 public class Tile_Mov : MonoBehaviour {
 
+    public Board_Grid Grid;
+    public Spawner spawner;
+
+    private int[, ,] board;
+
 	IEnumerator MovVertical (){
 		gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - 1, gameObject.transform.position.z);
 		yield return new WaitForSeconds (0.25f);
 		StartCoroutine (MovVertical ());
-	}
-
-	void rotate(){
-		if (Input.GetKeyDown (KeyCode.Z)) {
-			gameObject.transform.Rotate (0, 0, -90);
-		} else if (Input.GetKeyDown (KeyCode.X)) {
-			gameObject.transform.Rotate (0, 0, 90);
-		}
 	}
 
 	void MovHorizontal(){
@@ -27,10 +24,10 @@ public class Tile_Mov : MonoBehaviour {
 
 	void Start () {
 		StartCoroutine (MovVertical ());
+        board = Grid.genGrid();
 	}
 
 	void Update () {
-		rotate ();
 		MovHorizontal ();
 	}
 }
