@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour {
         facing = Board.isFacing;
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.MovHorizontal(tiles, board, facing);
+        TileManager.rotateObject(tiles, board, facing);
 	}
 
     void LateUpdate() {

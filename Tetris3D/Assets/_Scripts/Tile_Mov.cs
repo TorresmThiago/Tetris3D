@@ -103,15 +103,15 @@ public class Tile_Mov : MonoBehaviour {
         return true;
     }
 
-    public void rotateObject(GameObject group) {
-        if (Input.GetKeyDown(KeyCode.Z) && canRotate(board, boardFacing, "left", group)) {
-            eraseInGrid(board, boardFacing, group);
+    public void rotateObject(GameObject group, int[, ,] grid, int facing) {
+        if (Input.GetKeyDown(KeyCode.Z) && canRotate(grid, facing, "left", group)) {
+            eraseInGrid(grid, facing, group);
             group.transform.Rotate(0, 0, -90);
-            appearInGrid(board, boardFacing, group);
-        } else if (Input.GetKeyDown(KeyCode.X) && canRotate(board, boardFacing, "right", group)) {
-            eraseInGrid(board, boardFacing, group);
+            appearInGrid(grid, facing, group);
+        } else if (Input.GetKeyDown(KeyCode.X) && canRotate(grid, facing, "right", group)) {
+            eraseInGrid(grid, facing, group);
             group.transform.Rotate(0, 0, 90);
-            appearInGrid(board, boardFacing, group);
+            appearInGrid(grid, facing, group);
         }
     }
 
@@ -137,10 +137,11 @@ public class Tile_Mov : MonoBehaviour {
             eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x - 1, group.transform.position.y, group.transform.position.z);
             appearInGrid(grid, facing, group);
+
         } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(grid, facing, "right", group)) {
             eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x + 1, group.transform.position.y, group.transform.position.z);
             appearInGrid(grid, facing, group);
         }
-	}
+    }
 }
