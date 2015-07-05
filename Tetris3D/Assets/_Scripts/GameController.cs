@@ -3,12 +3,15 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-	// Use this for initialization
+    public Board_Grid Grid;
+    public Spawner spawner;
+
+    private int[, ,] board;
+
 	void Start () {
-	
+        board = Grid.genGrid();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 	
 	}
