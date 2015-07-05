@@ -4,60 +4,50 @@ using System.Collections;
 public class Tile_Mov : MonoBehaviour {
 
     public int[, ,] board;
-    public GameController gameController;
-    public Board_Rotate boardRotation;
     public int boardFacing = 0;
     public bool hasStoped = false; 
 
-    public int[, ,] getGrid() {
-        return board;
-    }
-
-    public void eraseInGrid(int[, ,] grid, int facing) { 
-        foreach (Transform child in transform) {
+    public void eraseInGrid(int[, ,] grid, int facing, GameObject group) { 
+        foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             grid[facing, actualRow, actualColumn] = 0;
         }
     }
 
-    public void appearInGrid (int[, ,] grid, int facing) {
-        foreach (Transform child in transform) {
+    public void appearInGrid (int[, ,] grid, int facing, GameObject group) {
+        foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             grid[facing, actualRow, actualColumn] = 1;
         }
     }
 
-    public int[, ,] setGrid(int[, ,] grid) {
-        return grid;
-    }
-
-    public bool canRotate(int[, ,] grid, int facing, string direction) {
+    public bool canRotate(int[, ,] grid, int facing, string direction, GameObject group) {
         //Erase the group position in grid so it won't hit itself
-        eraseInGrid(grid, facing);
+        eraseInGrid(grid, facing, group);
         
         //Rotate the group itself
         if (direction == "left"){
-            transform.Rotate(0, 0, 90);
+            group.transform.Rotate(0, 0, 90);
         } else{
-            transform.Rotate(0, 0, -90);
+            group.transform.Rotate(0, 0, -90);
         }
 
         //Loop that goes through the position in desired rotation checking if it's empty 
-        foreach (Transform child in transform) {
+        foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             if (grid[facing, actualRow, actualColumn] == 1) {
                 
                 //If it hits something, rotate back to the original position, draws it back in the grid and returns false (Not allowing the rotation)
                 if (direction == "left") {
-                    transform.Rotate(0, 0, -90);
+                    group.transform.Rotate(0, 0, -90);
                 } else {
-                    transform.Rotate(0, 0, 90);
+                    group.transform.Rotate(0, 0, 90);
                 }
 
-                appearInGrid(grid, facing);
+                appearInGrid(grid, facing, group);
                 return false;
 
             }
@@ -65,99 +55,87 @@ public class Tile_Mov : MonoBehaviour {
 
         //If it goes through the entire loop without hiting anything, rotates back to the original position, draws it back in the grid and returns true (Allowing rotation)
         if (direction == "left") {
-            transform.Rotate(0, 0, -90);
+            group.transform.Rotate(0, 0, -90);
         } else {
-            transform.Rotate(0, 0, 90);
+            group.transform.Rotate(0, 0, 90);
         }
 
-        appearInGrid(grid, facing);
+        appearInGrid(grid, facing, group);
         return true;
     }
 
-    public bool canMoveVertical(int[, ,] grid, int facing) {
-        eraseInGrid(grid, facing);
+    public bool canMoveVertical(int[, ,] grid, int facing, GameObject group) {
+        eraseInGrid(grid, facing, group);
 
-        foreach (Transform child in transform) {
+        foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             int desiredRow = actualRow--;
             if (grid[facing, desiredRow, actualColumn] == 1) {
-                appearInGrid(grid, facing);
+                appearInGrid(grid, facing, group);
                 return false;
             }
         }
 
-        appearInGrid(grid, facing);
+        appearInGrid(grid, facing, group);
         return true;
     }
 
-    public bool canMoveHorizontal(int[, ,] grid, int facing, string direction) {
-        eraseInGrid(grid, facing);
+    public bool canMoveHorizontal(int[, ,] grid, int facing, string direction, GameObject group) {
+        eraseInGrid(grid, facing, group);
 
-        foreach (Transform child in transform) {
+        foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             int desiredColumn = direction == "left" ? desiredColumn = actualColumn-- : desiredColumn = actualColumn++;
             if (grid[facing, actualRow, desiredColumn] == 1) {
-                appearInGrid(grid, facing);
+                appearInGrid(grid, facing, group);
                 return false;
             }
         }
 
-        appearInGrid(grid, facing);
+        appearInGrid(grid, facing, group);
         return true;
     }
 
-    public void rotateObject() {
-        if (Input.GetKeyDown(KeyCode.Z) && canRotate(board, boardFacing, "left")) {
-            eraseInGrid(board, boardFacing);
-            transform.Rotate(0, 0, -90);
-            appearInGrid(board, boardFacing);
-        } else if (Input.GetKeyDown(KeyCode.X) && canRotate(board, boardFacing, "right")) {
-            eraseInGrid(board, boardFacing);
-            transform.Rotate(0, 0, 90);
-            appearInGrid(board, boardFacing);
+    public void rotateObject(GameObject group) {
+        if (Input.GetKeyDown(KeyCode.Z) && canRotate(board, boardFacing, "left", group)) {
+            eraseInGrid(board, boardFacing, group);
+            group.transform.Rotate(0, 0, -90);
+            appearInGrid(board, boardFacing, group);
+        } else if (Input.GetKeyDown(KeyCode.X) && canRotate(board, boardFacing, "right", group)) {
+            eraseInGrid(board, boardFacing, group);
+            group.transform.Rotate(0, 0, 90);
+            appearInGrid(board, boardFacing, group);
         }
     }
 
-    public IEnumerator MovVertical (){
+    public IEnumerator MovVertical (GameObject group){
         yield return new WaitForSeconds(0.25f);
-        if (canMoveVertical(board, boardFacing)) {
-            eraseInGrid(board, boardFacing);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 1, gameObject.transform.position.z);
-            appearInGrid(board, boardFacing);
+        if (canMoveVertical(board, boardFacing, group)) {
+            eraseInGrid(board, boardFacing, group);
+            group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y - 1, group.transform.position.z);
+            appearInGrid(board, boardFacing, group);
         } else {
-            gameObject.tag = "Board";
-            foreach (Transform child in transform) {
+            group.tag = "Board";
+            foreach (Transform child in group.transform) {
                 child.tag = "Board";
             }
             hasStoped = true;
         }
 		
-		StartCoroutine (MovVertical ());
+		StartCoroutine (MovVertical (group));
 	}
 
-    public void MovHorizontal() { 
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && canMoveHorizontal(board, boardFacing, "left")) {
-            eraseInGrid(board, boardFacing);
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x - 1, gameObject.transform.position.y, gameObject.transform.position.z);
-            appearInGrid(board, boardFacing);
-        } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(board, boardFacing, "right")) {
-            eraseInGrid(board, boardFacing);
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x + 1, gameObject.transform.position.y, gameObject.transform.position.z);
-            appearInGrid(board, boardFacing);
+    public void MovHorizontal(GameObject group) { 
+		if (Input.GetKeyDown (KeyCode.LeftArrow) && canMoveHorizontal(board, boardFacing, "left", group)) {
+            eraseInGrid(board, boardFacing, group);
+            group.transform.position = new Vector3(group.transform.position.x - 1, group.transform.position.y, group.transform.position.z);
+            appearInGrid(board, boardFacing, group);
+        } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(board, boardFacing, "right", group)) {
+            eraseInGrid(board, boardFacing, group);
+            group.transform.position = new Vector3(group.transform.position.x + 1, group.transform.position.y, group.transform.position.z);
+            appearInGrid(board, boardFacing, group);
         }
 	}
-
-    void Start() {
-        board = gameController.getGrid();
-        boardFacing = boardRotation.isFacing; 
-        StartCoroutine(MovVertical());
-    }
-
-    void Update() {
-        boardFacing = boardRotation.isFacing;
-        rotateObject();
-        MovHorizontal();
-    }
 }

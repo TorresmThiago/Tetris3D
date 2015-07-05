@@ -3,12 +3,13 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-    public int facing;
     public Board_Grid Grid;
     public Board_Rotate Board;
-    public GameObject spawner;
+    public Spawner Spawner;
+    public Tile_Mov TileManager;
     public GameObject[] groups;
     private GameObject tiles;
+    public int facing;
 
     private int[, ,] board;
 
@@ -22,8 +23,8 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
-        int groupAdj = spawner.GetComponent<Spawner>().spawnNext(groups);
-        spawner.GetComponent<Spawner>().adjToGrid(groups[groupAdj], facing, board);
+        int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups);
+        Spawner.GetComponent<Spawner>().adjToGrid(groups[groupAdj], facing, board);
     }
 
 	void Update () {
@@ -32,7 +33,6 @@ public class GameController : MonoBehaviour {
 	}
 
     void LateUpdate() {
-        board = tiles.GetComponent<Tile_Mov>().getGrid();
         if (tiles.GetComponent<Tile_Mov>().hasStoped) {
             Destroy(tiles.GetComponent<Tile_Mov>());
         }
