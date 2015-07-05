@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour {
 		Instantiate (groups [index]);
 	}
 
-    private void adjToGrid(GameObject group, int facing, int[, ,] grid) {
+    public void adjToGrid(GameObject group, int facing, int[, ,] grid) {
         foreach (Transform child in group.transform) { 
             int child_row = Mathf.FloorToInt(child.transform.position.x); 
             int child_column = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
@@ -22,11 +22,3 @@ public class Spawner : MonoBehaviour {
         spawnNext();
 	}
 }
-
-
-/*
- * 
- *  ENTÃO, É O SEGUINTE. PARA AJUSTAR A POSIÇÃO DAS PEÇAS (X) (CUBES) PARA O GRID ATUAL, SÓ PEGA O TRANSFORM DELAS (GLOBAL) E MANDA .FLOOR <--- AWESOME
- *  USA ^^^^^^^^ PARA PEGAR A VALIDAÇÃO DE MOVIMENTAÇÃO E JOGA TODO O GAMEOBJECT PARA O LADO PARA CONSEGUIR ALGO
- * 
- */
