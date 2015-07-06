@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 
 	void Awake () {
         board = Grid.genGrid();
-        facing = Board.isFacing;
+		facing = gameObject.GetComponent<Board_Rotate>().getDirection();
     }
 
     void Start() {
@@ -29,10 +29,8 @@ public class GameController : MonoBehaviour {
         TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, facing));
     }
 
-    //Just in case.  void FixedUpdate() { }
-
 	void Update () {
-        facing = Board.isFacing;
+        facing = gameObject.GetComponent<Board_Rotate>().getDirection();
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.MovHorizontal(tiles, board, facing);
         TileManager.rotateObject(tiles, board, facing);

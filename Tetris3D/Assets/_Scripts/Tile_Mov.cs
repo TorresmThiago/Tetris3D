@@ -4,8 +4,7 @@ using System.Collections;
 public class Tile_Mov : MonoBehaviour {
 
     public int[, ,] board;
-    public int boardFacing = 0;
-
+    
     public void eraseInGrid(int[, ,] grid, int facing, GameObject group) {
         foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
