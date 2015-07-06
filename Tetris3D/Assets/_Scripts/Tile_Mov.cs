@@ -5,9 +5,8 @@ public class Tile_Mov : MonoBehaviour {
 
     public int[, ,] board;
     public int boardFacing = 0;
-    public bool hasStoped = false; 
 
-    public void eraseInGrid(int[, ,] grid, int facing, GameObject group) { 
+    public void eraseInGrid(int[, ,] grid, int facing, GameObject group) {
         foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
@@ -66,11 +65,10 @@ public class Tile_Mov : MonoBehaviour {
 
     public bool canMoveVertical(int[, ,] grid, int facing, GameObject group) {
         eraseInGrid(grid, facing, group);
-
         foreach (Transform child in group.transform) {
             int actualColumn = Mathf.FloorToInt(child.transform.position.x);
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-            int desiredRow = actualRow--;
+            int desiredRow = actualRow + 1;
             if (grid[facing, desiredRow, actualColumn] == 1) {
                 appearInGrid(grid, facing, group);
                 return false;
@@ -107,29 +105,34 @@ public class Tile_Mov : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Z) && canRotate(grid, facing, "left", group)) {
             eraseInGrid(grid, facing, group);
             group.transform.Rotate(0, 0, -90);
+            foreach (Transform child in group.transform) {
+                child.transform.Rotate(0, 0, 90);
+            }
             appearInGrid(grid, facing, group);
         } else if (Input.GetKeyDown(KeyCode.X) && canRotate(grid, facing, "right", group)) {
             eraseInGrid(grid, facing, group);
             group.transform.Rotate(0, 0, 90);
+            foreach (Transform child in group.transform) {
+                child.transform.Rotate(0, 0, -90);
+            }
             appearInGrid(grid, facing, group);
         }
     }
 
-    public IEnumerator MovVertical (GameObject group){
-        yield return new WaitForSeconds(0.25f);
-        if (canMoveVertical(board, boardFacing, group)) {
-            eraseInGrid(board, boardFacing, group);
+    public IEnumerator MovVertical (GameObject group, int[, ,] grid, int facing){
+        yield return new WaitForSeconds(0.5f);
+        if (canMoveVertical(grid, facing, group)) {
+            eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y - 1, group.transform.position.z);
-            appearInGrid(board, boardFacing, group);
+            appearInGrid(grid, facing, group);
         } else {
             group.tag = "Board";
             foreach (Transform child in group.transform) {
                 child.tag = "Board";
             }
-            hasStoped = true;
         }
 		
-		StartCoroutine (MovVertical (group));
+		StartCoroutine (MovVertical (group, grid, facing));
 	}
 
     public void MovHorizontal(GameObject group, int[, ,] grid, int facing) {
