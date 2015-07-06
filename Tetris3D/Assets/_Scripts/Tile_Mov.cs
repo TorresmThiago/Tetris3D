@@ -120,14 +120,14 @@ public class Tile_Mov : MonoBehaviour {
     }
 
     public IEnumerator MovVertical (GameObject group, int[, ,] grid, int facing){
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         if (canMoveVertical(grid, facing, group)) {
             eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y - 1, group.transform.position.z);
             appearInGrid(grid, facing, group);
         } else {
-            group.tag = "Board";
             foreach (Transform child in group.transform) {
+				group.tag = "Board";
                 child.tag = "Board";
             }
         }

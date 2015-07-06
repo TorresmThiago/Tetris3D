@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour {
 	}
 
     void LateUpdate() {
-        
+        if (tiles.tag == "Board")
+			Start ();
     }
 }
