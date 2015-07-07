@@ -105,10 +105,10 @@ public class Board_Rotate : MonoBehaviour {
 	void Update (){
 
 		if (!isRotating) {
-			if (Input.GetKey (KeyCode.A)) {
+			if (Input.GetKey (KeyCode.S)) {
 				direction = "left";
 				isRotating = true;
-            } else if (Input.GetKey (KeyCode.S)) {
+            } else if (Input.GetKey (KeyCode.A)) {
 				direction = "right";
 				isRotating = true;
             }

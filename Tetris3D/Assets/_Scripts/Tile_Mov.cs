@@ -97,14 +97,28 @@ public class Tile_Mov : MonoBehaviour {
         eraseInGrid(grid, facing, group);
 
         foreach (Transform child in group.transform) {
-            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
-            int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-            int desiredColumn;
-            if (direction == "left") {
-                desiredColumn = actualColumn - 1 + facing;
-            } else {
-                desiredColumn = actualColumn + 1 - facing;
+            int actualColumn = new int();
+            if (facing == 0 || facing == 2) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            } else if (facing == 1 || facing == 3) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.z);
             }
+            int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
+            int desiredColumn = new int();
+            if (direction == "left") {
+                if (facing == 0 || facing == 2) {
+                    desiredColumn = actualColumn - 1 + facing;
+                } else if (facing == 1 || facing == 3) {
+                    desiredColumn = actualColumn - 2 + facing;
+                }
+            } else {
+                if (facing == 0 || facing == 2) {
+                    desiredColumn = actualColumn + 1 - facing;
+                } else if (facing == 1 || facing == 3) {
+                    desiredColumn = actualColumn + 2 - facing;
+                }
+            }
+
             if (grid[facing, actualRow, desiredColumn] == 1) {
                 appearInGrid(grid, facing, group);
                 return false;
@@ -150,14 +164,22 @@ public class Tile_Mov : MonoBehaviour {
 	}
 
     public void MovHorizontal(GameObject group, int[, ,] grid, int facing) {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && canMoveHorizontal(grid, facing, "left", group)) {
+        if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(grid, facing, "left", group)) {
             eraseInGrid(grid, facing, group);
-            group.transform.position = new Vector3(group.transform.position.x - 1 + facing, group.transform.position.y, group.transform.position.z);
+            if (facing == 0 || facing == 2) {
+                group.transform.position = new Vector3(group.transform.position.x - 1 + facing, group.transform.position.y, group.transform.position.z);
+            } else if (facing == 1 || facing == 3) {
+                group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y, group.transform.position.z - 2 + facing);
+            }
             appearInGrid(grid, facing, group);
 
-        } else if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(grid, facing, "right", group)) {
+        } else if (Input.GetKeyDown(KeyCode.LeftArrow) && canMoveHorizontal(grid, facing, "right", group)) {
             eraseInGrid(grid, facing, group);
-            group.transform.position = new Vector3(group.transform.position.x + 1 - facing, group.transform.position.y, group.transform.position.z);
+            if (facing == 0 || facing == 2) {
+                group.transform.position = new Vector3(group.transform.position.x + 1 - facing, group.transform.position.y, group.transform.position.z);
+            } else if (facing == 1 || facing == 3) {
+                group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y, group.transform.position.z + 2 - facing);
+            }
             appearInGrid(grid, facing, group);
         }
     }
