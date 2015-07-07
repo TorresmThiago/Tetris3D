@@ -71,21 +71,25 @@ public class Board_Rotate : MonoBehaviour {
 		switch ((int)transform.localEulerAngles.y) {
 		case 0:
 			rotLeft = -90;
+            isFacing = 0;
 			rotRight = 90;
 			isRotating = false;	
 			break;
 		case 90:
 			rotLeft = 0;
+            isFacing = 1;
 			rotRight = -180;
 			isRotating = false;
 			break;			
 		case 180:
 			rotLeft = 90;
+            isFacing = 2;
 			rotRight = 270;
 			isRotating = false;	
 			break;
 		case 270:
 			rotLeft = 180;
+            isFacing = 3;
 			rotRight = -360;
 			isRotating = false;	
 			break;
@@ -93,26 +97,20 @@ public class Board_Rotate : MonoBehaviour {
 			break;
 		}
 	}
-	
+
+    void Start() {
+        isRotating = false;
+    }
+
 	void Update (){
 
 		if (!isRotating) {
-			if (Input.GetKeyDown (KeyCode.A)) {
+			if (Input.GetKey (KeyCode.A)) {
 				direction = "left";
 				isRotating = true;
-                isFacing++;
-                if (isFacing > 3) {
-                    isFacing = 0;
-                }
-            } else if (Input.GetKeyDown(KeyCode.S)) {
+            } else if (Input.GetKey (KeyCode.S)) {
 				direction = "right";
 				isRotating = true;
-				print(isFacing);
-                isFacing--;
-				print(isFacing);
-                if (isFacing < 0) {
-                    isFacing = 3;
-                }
             }
 		} else if(isRotating) {
 			Rotate(direction);
