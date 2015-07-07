@@ -193,23 +193,27 @@ public class Tile_Mov : MonoBehaviour {
         }
     }
 
-    public IEnumerator MovVertical (GameObject group, int[, ,] grid, int facing){
-        yield return new WaitForSeconds(0.25f);
+    public IEnumerator MovVertical (GameObject group, int[, ,] grid, int facing, GameObject[] parent, float time){
+        yield return new WaitForSeconds(time);
         if (canMoveVertical(grid, facing, group)) {
             eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y - 1, group.transform.position.z);
             appearInGrid(grid, facing, group);
         } else {
+            group.tag = "Board";
+            group.transform.parent = parent[facing].transform;
             foreach (Transform child in group.transform) {
-				group.tag = "Board";
                 child.tag = "Board";
+                //child.transform.parent = parent[facing].transform;
             }
+            time = 0.7f;
         }
 		
-		StartCoroutine (MovVertical (group, grid, facing));
+		StartCoroutine (MovVertical (group, grid, facing, parent, time));
 	}
 
     public void MovHorizontal(GameObject group, int[, ,] grid, int facing) {
+        
         if (Input.GetKeyDown(KeyCode.RightArrow) && canMoveHorizontal(grid, facing, "left", group)) {
             eraseInGrid(grid, facing, group);
             if (facing == 0 || facing == 2) {

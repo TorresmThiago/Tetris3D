@@ -9,10 +9,12 @@ public class GameController : MonoBehaviour {
     public Tile_Mov TileManager;
     public GameObject[] groups_1;
     public GameObject[] groups_2;
+    public GameObject[] Holders;
     private GameObject tiles;
     public int facing;
     private int index;
     private int[, ,] board;
+    private float time;
 
     public int[, ,] getGrid() {
         return board;
@@ -24,6 +26,7 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
+        time = 0.7f;
         index = Random.Range(0, 4);
         int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups_1, groups_2, index);
         if (index == 1 || index == 3) {
@@ -32,7 +35,7 @@ public class GameController : MonoBehaviour {
             Spawner.GetComponent<Spawner>().adjToGrid(groups_1[groupAdj], index, board);
         }
         tiles = GameObject.FindGameObjectWithTag("Piece");
-        TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index));
+        TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders,time));
     }
 
 	void Update () {
@@ -40,10 +43,15 @@ public class GameController : MonoBehaviour {
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.MovHorizontal(tiles, board, index);
         TileManager.rotateObject(tiles, board, index);
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            time = 0.01f;
+            TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders, time));
+        }
 	}
 
     void LateUpdate() {
-        if (tiles.tag == "Board")
-			Start ();
+        if (tiles.tag == "Board") {
+            Start();
+        }
     }
 }
