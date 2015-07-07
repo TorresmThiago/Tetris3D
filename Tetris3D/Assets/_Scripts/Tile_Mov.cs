@@ -36,23 +36,45 @@ public class Tile_Mov : MonoBehaviour {
         eraseInGrid(grid, facing, group);
         
         //Rotate the group itself
-        if (direction == "left"){
-            group.transform.Rotate(0, 0, 90);
-        } else{
-            group.transform.Rotate(0, 0, -90);
+        if (facing == 0 || facing == 2) {
+            if (direction == "left") {
+                group.transform.Rotate(0, 0, 90);
+            } else {
+                group.transform.Rotate(0, 0, -90);
+            }
+        } else {
+            if (direction == "left") {
+                group.transform.Rotate(90, 0, 0);
+            } else {
+                group.transform.Rotate(-90, 0, 0);
+            }
         }
+        
 
         //Loop that goes through the position in desired rotation checking if it's empty 
         foreach (Transform child in group.transform) {
-            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            int actualColumn = new int();
+            if (facing == 0 || facing == 2) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            } else if (facing == 1 || facing == 3) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.z);
+            }
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             if (grid[facing, actualRow, actualColumn] == 1) {
                 
                 //If it hits something, rotate back to the original position, draws it back in the grid and returns false (Not allowing the rotation)
-                if (direction == "left") {
-                    group.transform.Rotate(0, 0, -90);
+                if (facing == 0 || facing == 2) {
+                    if (direction == "left") {
+                        group.transform.Rotate(0, 0, -90);
+                    } else {
+                        group.transform.Rotate(0, 0, 90);
+                    }
                 } else {
-                    group.transform.Rotate(0, 0, 90);
+                    if (direction == "left") {
+                        group.transform.Rotate(-90, 0, 0);
+                    } else {
+                        group.transform.Rotate(90, 0, 0);
+                    }
                 }
 
                 appearInGrid(grid, facing, group);
@@ -62,10 +84,18 @@ public class Tile_Mov : MonoBehaviour {
         }
 
         //If it goes through the entire loop without hiting anything, rotates back to the original position, draws it back in the grid and returns true (Allowing rotation)
-        if (direction == "left") {
-            group.transform.Rotate(0, 0, -90);
+        if (facing == 0 || facing == 2) {
+            if (direction == "left") {
+                group.transform.Rotate(0, 0, -90);
+            } else {
+                group.transform.Rotate(0, 0, 90);
+            }
         } else {
-            group.transform.Rotate(0, 0, 90);
+            if (direction == "left") {
+                group.transform.Rotate(-90, 0, 0);
+            } else {
+                group.transform.Rotate(90, 0, 0);
+            }
         }
 
         appearInGrid(grid, facing, group);
@@ -132,16 +162,32 @@ public class Tile_Mov : MonoBehaviour {
     public void rotateObject(GameObject group, int[, ,] grid, int facing) {
         if (Input.GetKeyDown(KeyCode.Z) && canRotate(grid, facing, "left", group)) {
             eraseInGrid(grid, facing, group);
-            group.transform.Rotate(0, 0, -90);
+            if (facing == 0 || facing == 2) {
+                group.transform.Rotate(0, 0, -90);
+            } else {
+                group.transform.Rotate(-90, 0, 0);
+            }
             foreach (Transform child in group.transform) {
-                child.transform.Rotate(0, 0, 90);
+                if (facing == 0 || facing == 2) {
+                    group.transform.Rotate(0, 0, 90);
+                } else {
+                    group.transform.Rotate(90, 0, 0);
+                }
             }
             appearInGrid(grid, facing, group);
         } else if (Input.GetKeyDown(KeyCode.X) && canRotate(grid, facing, "right", group)) {
             eraseInGrid(grid, facing, group);
-            group.transform.Rotate(0, 0, 90);
+            if (facing == 0 || facing == 2) {
+                group.transform.Rotate(0, 0, 90);
+            } else {
+                group.transform.Rotate(90, 0, 0);
+            }
             foreach (Transform child in group.transform) {
-                child.transform.Rotate(0, 0, -90);
+                if (facing == 0 || facing == 2) {
+                    group.transform.Rotate(0, 0, -90);
+                } else {
+                    group.transform.Rotate(-90, 0, 0);
+                }
             }
             appearInGrid(grid, facing, group);
         }
