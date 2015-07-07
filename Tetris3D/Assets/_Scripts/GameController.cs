@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
     public GameObject[] groups_2;
     private GameObject tiles;
     public int facing;
-
+    private int index;
     private int[, ,] board;
 
     public int[, ,] getGrid() {
@@ -24,22 +24,22 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
-        int index = Random.Range(0, 4);
+        index = Random.Range(0, 4);
         int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups_1, groups_2, index);
         if (index == 1 || index == 3) {
-            Spawner.GetComponent<Spawner>().adjToGrid(groups_2[groupAdj], facing, board);
+            Spawner.GetComponent<Spawner>().adjToGrid(groups_2[groupAdj], index, board);
         } else {
-            Spawner.GetComponent<Spawner>().adjToGrid(groups_1[groupAdj], facing, board);
+            Spawner.GetComponent<Spawner>().adjToGrid(groups_1[groupAdj], index, board);
         }
         tiles = GameObject.FindGameObjectWithTag("Piece");
-        TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, facing));
+        TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index));
     }
 
 	void Update () {
         facing = gameObject.GetComponent<Board_Rotate>().getDirection();
         tiles = GameObject.FindGameObjectWithTag("Piece");
-        TileManager.MovHorizontal(tiles, board, facing);
-        TileManager.rotateObject(tiles, board, facing);
+        TileManager.MovHorizontal(tiles, board, index);
+        TileManager.rotateObject(tiles, board, index);
 	}
 
     void LateUpdate() {

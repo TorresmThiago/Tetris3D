@@ -7,7 +7,12 @@ public class Tile_Mov : MonoBehaviour {
     
     public void eraseInGrid(int[, ,] grid, int facing, GameObject group) {
         foreach (Transform child in group.transform) {
-            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            int actualColumn = new int();
+            if (facing == 0 || facing == 2) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            } else if (facing == 1 || facing == 3) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.z);
+            }
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             grid[facing, actualRow, actualColumn] = 0;
         }
@@ -15,7 +20,12 @@ public class Tile_Mov : MonoBehaviour {
 
     public void appearInGrid (int[, ,] grid, int facing, GameObject group) {
         foreach (Transform child in group.transform) {
-            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            int actualColumn = new int();
+            if (facing == 0 || facing == 2) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            } else if (facing == 1 || facing == 3) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.z);
+            }
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             grid[facing, actualRow, actualColumn] = 1;
         }
@@ -65,7 +75,12 @@ public class Tile_Mov : MonoBehaviour {
     public bool canMoveVertical(int[, ,] grid, int facing, GameObject group) {
         eraseInGrid(grid, facing, group);
         foreach (Transform child in group.transform) {
-            int actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            int actualColumn = new int();
+            if (facing == 0 || facing == 2) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.x);
+            } else if (facing == 1 || facing == 3) {
+                actualColumn = Mathf.FloorToInt(child.transform.position.z);
+            }
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             int desiredRow = actualRow + 1;
             if (grid[facing, desiredRow, actualColumn] == 1) {
