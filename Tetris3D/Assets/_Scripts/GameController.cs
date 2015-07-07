@@ -7,7 +7,8 @@ public class GameController : MonoBehaviour {
     public Board_Rotate Board;
     public Spawner Spawner;
     public Tile_Mov TileManager;
-    public GameObject[] groups;
+    public GameObject[] groups_1;
+    public GameObject[] groups_2;
     private GameObject tiles;
     public int facing;
 
@@ -23,8 +24,13 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
-        int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups, facing);
-        Spawner.GetComponent<Spawner>().adjToGrid(groups[groupAdj], facing, board);
+        int index = Random.Range(0, 4);
+        int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups_1, groups_2, index);
+        if (index == 1 || index == 3) {
+            Spawner.GetComponent<Spawner>().adjToGrid(groups_2[groupAdj], facing, board);
+        } else {
+            Spawner.GetComponent<Spawner>().adjToGrid(groups_1[groupAdj], facing, board);
+        }
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, facing));
     }
