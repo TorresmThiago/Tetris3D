@@ -5,9 +5,15 @@ public class Spawner : MonoBehaviour {
 
 	public GameObject[] groups;
 
-	public int spawnNext(GameObject[] pieces){
+	public int spawnNext(GameObject[] pieces, int facing){
 		int index = Random.Range (0, pieces.Length);
-        Instantiate(pieces [index]);
+        if (facing == 0) {
+            Vector3 position = new Vector3(6,-2,-11.5f); 
+            Instantiate(pieces[index], position, Quaternion.identity);
+        } else if (facing == 2) {
+            Vector3 position = new Vector3(6, -2, -.5f);
+            Instantiate(pieces[index], position, Quaternion.identity);
+        }
         return index;
 	}
 

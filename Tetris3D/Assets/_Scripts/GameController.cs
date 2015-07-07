@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
-        int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups);
+        int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups, facing);
         Spawner.GetComponent<Spawner>().adjToGrid(groups[groupAdj], facing, board);
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, facing));
