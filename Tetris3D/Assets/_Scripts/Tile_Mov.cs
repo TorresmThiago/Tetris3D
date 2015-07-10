@@ -265,8 +265,8 @@ public class Tile_Mov : MonoBehaviour {
 				a.transform.parent = parent[facing].transform;
 				a.tag = "Board";
 			}*/
-			while(group.transform.childCount > 1){
-				Transform aChild = transform.FindChild( "Cube" );
+			while(group.transform.childCount > 0){
+				Transform aChild = group.transform.FindChild("Cube");
 				aChild.transform.parent = parent[facing].transform;
 				aChild.tag = "Board";
 			}
