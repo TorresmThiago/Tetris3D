@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour {
         return index;
 	}
 
-    public void adjToGrid(GameObject group, int facing, int[, ,] grid) {
+    /*public void adjToGrid(GameObject group, int facing, int[, ,] grid) {
         foreach (Transform child in group.transform) {
             int child_row = new int();
             if (facing == 0 || facing == 2) {
@@ -34,5 +34,5 @@ public class Spawner : MonoBehaviour {
             int child_column = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
             grid[facing, child_row, child_column] = 1;
         }
-    }
+    }*/
 }

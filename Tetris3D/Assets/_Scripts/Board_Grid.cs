@@ -39,4 +39,23 @@ public class Board_Grid : MonoBehaviour {
         return Grid;
 
     }
+
+	public string heyGrid(int [, ,]Grid, int facing) {
+
+		string a = "";
+
+		for (int i = 0; i < Grid.GetLength(0); i++) {
+			for (int j = 0; j < Grid.GetLength(1); j++) {
+				for (int k = 0; k < Grid.GetLength(2); k++) {
+					if(i == facing)
+						a = a + " " + Grid [i,j,k];
+				}
+				a = a + " - Quebra de Linha - ";
+			}
+			a = a + " - Troca de face - ";
+		}
+		
+		return a;
+		
+	}
 }

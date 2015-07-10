@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
     private int[, ,] board;
     private float time;
 
+	string text;
+
     public int[, ,] getGrid() {
         return board;
     }
@@ -29,11 +31,6 @@ public class GameController : MonoBehaviour {
         time = 0.7f;
         index = Random.Range(0, 4);
         int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups_1, groups_2, index);
-        if (index == 1 || index == 3) {
-            Spawner.GetComponent<Spawner>().adjToGrid(groups_2[groupAdj], index, board);
-        } else {
-            Spawner.GetComponent<Spawner>().adjToGrid(groups_1[groupAdj], index, board);
-        }
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders,time));
     }
@@ -47,6 +44,8 @@ public class GameController : MonoBehaviour {
             time = 0.01f;
             TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders, time));
         }
+		text = Grid.heyGrid (board, index);
+		print (text);
 	}
 
     void LateUpdate() {
