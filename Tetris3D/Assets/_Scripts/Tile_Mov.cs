@@ -6,7 +6,7 @@ public class Tile_Mov : MonoBehaviour {
     public int[, ,] board;
     
     public void eraseInGrid(int[, ,] grid, int facing, GameObject group) {
-        foreach (Transform child in group.transform) {
+        foreach (Transform child in group.transform) {  
             int actualColumn = new int();
             if (facing == 0 || facing == 2) {
                 actualColumn = Mathf.FloorToInt(child.transform.position.x);
@@ -249,32 +249,16 @@ public class Tile_Mov : MonoBehaviour {
             eraseInGrid(grid, facing, group);
             group.transform.position = new Vector3(group.transform.position.x, group.transform.position.y - 1, group.transform.position.z);
             appearInGrid(grid, facing, group);
+            StartCoroutine(MovVertical(group, grid, facing, parent, time));
         } else {
-            group.tag = "Board";
-            //group.transform.parent = parent[facing].transform;
-			//GameObject a = group;
-			//Transform[] allChildren = GetComponentsInChildren<a>();
-
-            /*foreach (Transform child in a) {
-				child.transform.parent = parent[facing].transform;
-                child.tag = "Board";
-            }*/
-
-			/*for(int i = 0; i <= 4; i++){
-				Transform a =  group.GetComponentInChildren<group.transform>();
-				a.transform.parent = parent[facing].transform;
-				a.tag = "Board";
-			}*/
+            group.tag = "UsedHolder";
 			while(group.transform.childCount > 0){
 				Transform aChild = group.transform.FindChild("Cube");
 				aChild.transform.parent = parent[facing].transform;
 				aChild.tag = "Board";
 			}
-
             time = 0.7f;
         }
-		
-		StartCoroutine (MovVertical (group, grid, facing, parent, time));
 	}
 
     public void MovHorizontal(GameObject group, int[, ,] grid, int facing) {

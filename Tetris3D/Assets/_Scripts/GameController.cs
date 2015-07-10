@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour {
         int groupAdj = Spawner.GetComponent<Spawner>().spawnNext(groups_1, groups_2, index);
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders,time));
+        Destroy(GameObject.FindGameObjectWithTag("UsedHolder"));
     }
 
 	void Update () {
@@ -46,8 +47,7 @@ public class GameController : MonoBehaviour {
 	}
 
     void LateUpdate() {
-        if (tiles.tag == "Board") {
-			tiles.transform.DetachChildren();
+        if (tiles.tag == "UsedHolder") {
             Start();
         }
 		TileManager.rotateObject(tiles, board, index);

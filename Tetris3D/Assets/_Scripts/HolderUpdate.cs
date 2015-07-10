@@ -25,6 +25,12 @@ public class HolderUpdate : MonoBehaviour {
 		// do whatever with child transform here
 	}
 
+     * Ok, pensei em uma parada meio zoada, mas Manda um for, que vai passando em cad
+     * a uma das faces. A cada face, ele roda todas as linhas do eixo x, vê se ele
+     * é 1 ou 0. Se 0, a bool que faz o for de cada linha rodar vira fals
+     * o e ele vai pro próximo. Se for 1 ele continua até o final da linha e destrói 
+     * todos, mas pegando o lugar que foi, pra poder abaixar em uma linha todos acima
+     * 
 	*/
 
     bool compareArray (int[]a, int[]b) {
