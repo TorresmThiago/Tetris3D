@@ -39,18 +39,17 @@ public class GameController : MonoBehaviour {
         facing = gameObject.GetComponent<Board_Rotate>().getDirection();
         tiles = GameObject.FindGameObjectWithTag("Piece");
         TileManager.MovHorizontal(tiles, board, index);
-        TileManager.rotateObject(tiles, board, index);
         if (Input.GetKeyDown(KeyCode.Space)) {
             time = 0.01f;
             TileManager.StartCoroutine(TileManager.MovVertical(tiles, board, index, Holders, time));
         }
-		text = Grid.heyGrid (board, index);
-		print (text);
 	}
 
     void LateUpdate() {
         if (tiles.tag == "Board") {
+			tiles.transform.DetachChildren();
             Start();
         }
+		TileManager.rotateObject(tiles, board, index);
     }
 }

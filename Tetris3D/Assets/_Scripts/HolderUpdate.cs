@@ -18,8 +18,15 @@ public class HolderUpdate : MonoBehaviour {
                                  |
       [0,2,0]  [0,2,1]  [0,2,2]  |  [1,2,0]  [1,2,1]  [1,2,2]
      
-     */
+
     
+	Transform[] allChildren = GetComponentsInChildren<Transform>();
+	foreach (Transform child in allChildren) {
+		// do whatever with child transform here
+	}
+
+	*/
+
     bool compareArray (int[]a, int[]b) {
 
         for(var i = 1; i < a.Length; i++) {
@@ -42,7 +49,7 @@ public class HolderUpdate : MonoBehaviour {
     void breakLine(GameObject holder, int facing, int line) {
         foreach (Transform child in gameObject.transform) {
             int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-             int actualColumn = new int();
+            int actualColumn = new int();
             if (facing == 0 || facing == 2) {
                 actualColumn = Mathf.FloorToInt(child.transform.position.x);
             } else if (facing == 1 || facing == 3) {
@@ -69,11 +76,11 @@ public class HolderUpdate : MonoBehaviour {
     }
         
     void Start() {
-        board = gameController.GetComponent<GameController>().getGrid();
+        //board = gameController.GetComponent<GameController>().getGrid();
     }
 
 	void Update () {
-        checkGrid(board);
+        //checkGrid(board);
 
     }
 

@@ -34,21 +34,32 @@ public class Tile_Mov : MonoBehaviour {
     public bool canRotate(int[, ,] grid, int facing, string direction, GameObject group) {
         //Erase the group position in grid so it won't hit itself
         eraseInGrid(grid, facing, group);
-        
+
         //Rotate the group itself
         if (facing == 0 || facing == 2) {
-            if (direction == "left") {
-                group.transform.Rotate(0, 0, 90);
-            } else {
-                group.transform.Rotate(0, 0, -90);
-            }
+
+			if (direction == "left") {
+				group.transform.Rotate(0, 0, 90);
+			} else {
+				group.transform.Rotate(0, 0, -90);
+			}
+
+			foreach (Transform child in group.transform) {
+				child.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+			}
+
         } else {
-            if (direction == "left") {
-                group.transform.Rotate(90, 0, 0);
-            } else {
-                group.transform.Rotate(-90, 0, 0);
-            }
-        }
+
+			if (direction == "left") {
+				group.transform.Rotate(90, 0, 0);
+			} else {
+				group.transform.Rotate(-90, 0, 0);
+			}
+			
+			foreach (Transform child in group.transform) {
+				child.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+			}
+		}
         
 
         //Loop that goes through the position in desired rotation checking if it's empty 
@@ -63,19 +74,31 @@ public class Tile_Mov : MonoBehaviour {
             if (grid[facing, actualRow, actualColumn] == 1) {
                 
                 //If it hits something, rotate back to the original position, draws it back in the grid and returns false (Not allowing the rotation)
-                if (facing == 0 || facing == 2) {
-                    if (direction == "left") {
-                        group.transform.Rotate(0, 0, -90);
-                    } else {
-                        group.transform.Rotate(0, 0, 90);
-                    }
-                } else {
-                    if (direction == "left") {
-                        group.transform.Rotate(-90, 0, 0);
-                    } else {
-                        group.transform.Rotate(90, 0, 0);
-                    }
-                }
+				if (facing == 0 || facing == 2) {
+
+					if (direction == "left") {
+						group.transform.Rotate(0, 0, -90);
+					} else {
+						group.transform.Rotate(0, 0, 90);
+					}
+
+					foreach (Transform childz in group.transform) {
+						childz.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+					}
+					
+				} else {
+
+					if (direction == "left") {
+						group.transform.Rotate(-90, 0, 0);
+					} else {
+						group.transform.Rotate(90, 0, 0);
+					}
+
+					foreach (Transform childz in group.transform) {
+						childz.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+					}
+
+				}
 
                 appearInGrid(grid, facing, group);
                 return false;
@@ -84,25 +107,39 @@ public class Tile_Mov : MonoBehaviour {
         }
 
         //If it goes through the entire loop without hiting anything, rotates back to the original position, draws it back in the grid and returns true (Allowing rotation)
-        if (facing == 0 || facing == 2) {
-            if (direction == "left") {
-                group.transform.Rotate(0, 0, -90);
-            } else {
-                group.transform.Rotate(0, 0, 90);
-            }
-        } else {
-            if (direction == "left") {
-                group.transform.Rotate(-90, 0, 0);
-            } else {
-                group.transform.Rotate(90, 0, 0);
-            }
-        }
+		if (facing == 0 || facing == 2) {
 
-        appearInGrid(grid, facing, group);
-        return true;
-    }
+			if (direction == "left") {
+				group.transform.Rotate(0, 0, -90);
+			} else {
+				group.transform.Rotate(0, 0, 90);
+			}
 
-    public bool canMoveVertical(int[, ,] grid, int facing, GameObject group) {
+			foreach (Transform child in group.transform) {
+				child.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+			}
+			
+
+			
+		} else {
+
+			if (direction == "left") {
+				group.transform.Rotate(-90, 0, 0);
+			} else {
+				group.transform.Rotate(90, 0, 0);
+			}
+
+			foreach (Transform child in group.transform) {
+				child.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+			}
+
+		}
+		
+		appearInGrid(grid, facing, group);
+		return true;
+	}
+	
+	public bool canMoveVertical(int[, ,] grid, int facing, GameObject group) {
         eraseInGrid(grid, facing, group);
         foreach (Transform child in group.transform) {
             int actualColumn = new int();
@@ -161,35 +198,48 @@ public class Tile_Mov : MonoBehaviour {
 
     public void rotateObject(GameObject group, int[, ,] grid, int facing) {
         if (Input.GetKeyDown(KeyCode.Z) && canRotate(grid, facing, "left", group)) {
-            eraseInGrid(grid, facing, group);
-            if (facing == 0 || facing == 2) {
-                group.transform.Rotate(0, 0, -90);
-            } else {
-                group.transform.Rotate(-90, 0, 0);
-            }
-            foreach (Transform child in group.transform) {
-                if (facing == 0 || facing == 2) {
-                    group.transform.Rotate(0, 0, 90);
-                } else {
-                    group.transform.Rotate(90, 0, 0);
-                }
-            }
+            
+			eraseInGrid(grid, facing, group);
+
+			if (facing == 0 || facing == 2) {
+				group.transform.Rotate(0, 0, -90);
+			} else {
+				group.transform.Rotate(-90, 0, 0);
+			}
+
+			//child.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+			//child.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+
+			
+			foreach (Transform child in group.transform) {
+				if (facing == 0 || facing == 2) {
+					child.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+				} else {
+					child.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+				}
+			}
+            
             appearInGrid(grid, facing, group);
+
         } else if (Input.GetKeyDown(KeyCode.X) && canRotate(grid, facing, "right", group)) {
             eraseInGrid(grid, facing, group);
-            if (facing == 0 || facing == 2) {
-                group.transform.Rotate(0, 0, 90);
-            } else {
-                group.transform.Rotate(90, 0, 0);
-            }
-            foreach (Transform child in group.transform) {
-                if (facing == 0 || facing == 2) {
-                    group.transform.Rotate(0, 0, -90);
-                } else {
-                    group.transform.Rotate(-90, 0, 0);
-                }
-            }
+
+			if (facing == 0 || facing == 2) {
+				group.transform.Rotate(0, 0, 90);
+			} else {
+				group.transform.Rotate(90, 0, 0);
+			}
+
+			foreach (Transform child in group.transform) {
+				if (facing == 0 || facing == 2) {
+					child.transform.rotation = Quaternion.Euler(0, 0, group.transform.eulerAngles.z * (-1));
+				} else {
+					child.transform.rotation = Quaternion.Euler(group.transform.eulerAngles.x * (-1),0,0);
+				}
+			}
+
             appearInGrid(grid, facing, group);
+
         }
     }
 
@@ -201,11 +251,26 @@ public class Tile_Mov : MonoBehaviour {
             appearInGrid(grid, facing, group);
         } else {
             group.tag = "Board";
-            group.transform.parent = parent[facing].transform;
-            foreach (Transform child in group.transform) {
+            //group.transform.parent = parent[facing].transform;
+			//GameObject a = group;
+			//Transform[] allChildren = GetComponentsInChildren<a>();
+
+            /*foreach (Transform child in a) {
+				child.transform.parent = parent[facing].transform;
                 child.tag = "Board";
-                //child.transform.parent = parent[facing].transform;
-            }
+            }*/
+
+			/*for(int i = 0; i <= 4; i++){
+				Transform a =  group.GetComponentInChildren<group.transform>();
+				a.transform.parent = parent[facing].transform;
+				a.tag = "Board";
+			}*/
+			while(group.transform.childCount > 1){
+				Transform aChild = transform.FindChild( "Cube" );
+				aChild.transform.parent = parent[facing].transform;
+				aChild.tag = "Board";
+			}
+
             time = 0.7f;
         }
 		
