@@ -4,93 +4,53 @@ using System.Collections;
 public class HolderUpdate : MonoBehaviour {
 
     public GameObject gameController;
-    int[, ,] board;
-    int[] line = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-    int[] compare = new int[12];
+	public Tile_Mov tileMov;
+    public int[, ,] board;
+	public int direction;
 
-    /* 
-      
-      Three-dimensional array with specified dimensions [Page, Row, Column]
-     
-      [0,0,0]  [0,0,1]  [0,0,2]  |  [1,0,0]  [1,0,1]  [1,0,2]
-                                 | 
-      [0,1,0]  [0,1,1]  [0,1,2]  |  [1,1,0]  [1,1,1]  [1,1,2]
-                                 |
-      [0,2,0]  [0,2,1]  [0,2,2]  |  [1,2,0]  [1,2,1]  [1,2,2]
-     
+    void breakLine(int[,,] board, int facing, int line) {
+		int childCount = gameObject.transform.childCount;
+		Transform[] children = gameObject.GetComponentsInChildren<Transform>();
 
-    
-	Transform[] allChildren = GetComponentsInChildren<Transform>();
-	foreach (Transform child in allChildren) {
-		// do whatever with child transform here
-	}
+		for(int i = 0; i < childCount; i++) {
 
-     * Ok, pensei em uma parada meio zoada, mas Manda um for, que vai passando em cad
-     * a uma das faces. A cada face, ele roda todas as linhas do eixo x, vê se ele
-     * é 1 ou 0. Se 0, a bool que faz o for de cada linha rodar vira fals
-     * o e ele vai pro próximo. Se for 1 ele continua até o final da linha e destrói 
-     * todos, mas pegando o lugar que foi, pra poder abaixar em uma linha todos acima
-     * 
-	*/
+			if(((-1) * (Mathf.RoundToInt(children[i].transform.position.y + 0.5f))) == line){
+				//tileMov.GetComponent<Tile_Mov>().eraseInGrid(board, direction, children[i].gameObject);
+				Destroy(children[i].gameObject);
+			}
 
-    bool compareArray (int[]a, int[]b) {
-
-        for(var i = 1; i < a.Length; i++) {
-            if(a[i] != b[0]){
-                return false;        
-            }
-        }
-
-        return true;
+		}
     }
 
-    void destroyHolder() { 
-        foreach (Transform child in gameObject.transform) {
-            if (child.transform.position.y < -50) {
-                Destroy(child.gameObject);
-            }
-        }
-    }
-    
-    void breakLine(GameObject holder, int facing, int line) {
-        foreach (Transform child in gameObject.transform) {
-            int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-            int actualColumn = new int();
-            if (facing == 0 || facing == 2) {
-                actualColumn = Mathf.FloorToInt(child.transform.position.x);
-            } else if (facing == 1 || facing == 3) {
-                actualColumn = Mathf.FloorToInt(child.transform.position.z);
+	public int [,,] getGrid(){
+		return board;
+	} 
+
+    void checkGrid(int[, ,] grid, int facing) {
+
+		bool fullLine;
+
+		for (int j = 3; j < grid.GetLength(1) - 1; j++) {
+			fullLine = true;
+            for (int k = 1; k < grid.GetLength(2) - 1; k++) {
+				if(grid[facing, j, k] == 0){
+					fullLine = false;
+				}
             }
 
-            if (board[facing, line, actualRow] == 1) {
-                Destroy(child);
-            }
-        }
-    }
-
-    void checkGrid(int[, ,] grid) {
-        for (int i = 0; i < grid.GetLength(0); i++) {
-            for (int j = 0; j < grid.GetLength(1); j++) {
-                for (int k = 0; k < grid.GetLength(2); k++) {
-                    compare[k] = grid[i, j, k];
-                }
-                if (compareArray(compare, line)) {
-                    breakLine(gameObject, i, j);
-                }
-            }
+			if(fullLine){
+				print("FullLine");
+				breakLine(grid, facing, j);
+			}
         }
     }
         
     void Start() {
-        //board = gameController.GetComponent<GameController>().getGrid();
-    }
+		board = gameController.GetComponent<GameController>().getGrid();
+	}
 
 	void Update () {
-        //checkGrid(board);
-
-    }
-
-    void LateUpdate() { 
-    
+		board = gameController.GetComponent<GameController>().getGrid();
+        checkGrid(board, direction);
     }
 }

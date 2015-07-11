@@ -16,8 +16,6 @@ public class GameController : MonoBehaviour {
     private int[, ,] board;
     private float time;
 
-	string text;
-
     public int[, ,] getGrid() {
         return board;
     }
@@ -47,8 +45,17 @@ public class GameController : MonoBehaviour {
 	}
 
     void LateUpdate() {
-        if (tiles.tag == "UsedHolder") {
-            Start();
+		for (int i = 0; i < 4; i++) {
+			int[,,] a = Holders[i].GetComponent<HolderUpdate>().getGrid();
+			for (int j = 0; j < board.GetLength(1); j++) {
+				for (int k = 0; k < board.GetLength(2); k++) {
+					board[i,j,k] = a[i,j,k];
+				}
+			}
+		}
+		
+		if (tiles.tag == "UsedHolder") {
+			Start();
         }
 		TileManager.rotateObject(tiles, board, index);
     }

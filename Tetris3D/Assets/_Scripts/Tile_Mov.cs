@@ -6,19 +6,30 @@ public class Tile_Mov : MonoBehaviour {
     public int[, ,] board;
     
     public void eraseInGrid(int[, ,] grid, int facing, GameObject group) {
-        foreach (Transform child in group.transform) {  
-            int actualColumn = new int();
-            if (facing == 0 || facing == 2) {
-                actualColumn = Mathf.FloorToInt(child.transform.position.x);
-            } else if (facing == 1 || facing == 3) {
-                actualColumn = Mathf.FloorToInt(child.transform.position.z);
-            }
-            int actualRow = (-1) * (Mathf.RoundToInt(child.transform.position.y + 0.5f));
-            grid[facing, actualRow, actualColumn] = 0;
-        }
-    }
-
-    public void appearInGrid (int[, ,] grid, int facing, GameObject group) {
+		if (group.transform.childCount != 0) {
+			foreach (Transform child in group.transform) {  
+				int actualColumn = new int ();
+				if (facing == 0 || facing == 2) {
+					actualColumn = Mathf.FloorToInt (child.transform.position.x);
+				} else if (facing == 1 || facing == 3) {
+					actualColumn = Mathf.FloorToInt (child.transform.position.z);
+				}
+				int actualRow = (-1) * (Mathf.RoundToInt (child.transform.position.y + 0.5f));
+				grid [facing, actualRow, actualColumn] = 0;
+			}
+		} else {
+			int actualColumn = new int ();
+			if (facing == 0 || facing == 2) {
+				actualColumn = Mathf.FloorToInt (group.transform.position.x);
+			} else if (facing == 1 || facing == 3) {
+				actualColumn = Mathf.FloorToInt (group.transform.position.z);
+			}
+			int actualRow = (-1) * (Mathf.RoundToInt (group.transform.position.y + 0.5f));
+			grid [facing, actualRow, actualColumn] = 0;
+		}
+	}
+	
+	public void appearInGrid (int[, ,] grid, int facing, GameObject group) {
         foreach (Transform child in group.transform) {
             int actualColumn = new int();
             if (facing == 0 || facing == 2) {
