@@ -12,15 +12,30 @@ public class HolderUpdate : MonoBehaviour {
 		int childCount = gameObject.transform.childCount;
 		Transform[] children = gameObject.GetComponentsInChildren<Transform>();
 
-		for(int i = 0; i < childCount; i++) {
+		for(int i = 0; i <= childCount; i++) {
 
 			if(((-1) * (Mathf.RoundToInt(children[i].transform.position.y + 0.5f))) == line){
-				//tileMov.GetComponent<Tile_Mov>().eraseInGrid(board, direction, children[i].gameObject);
+				tileMov.GetComponent<Tile_Mov>().eraseInGrid(board, direction, children[i].gameObject);
 				Destroy(children[i].gameObject);
 			}
 
 		}
     }
+
+	void downLine(int[,,] board, int facing, int line) {
+		int childCount = gameObject.transform.childCount;
+		Transform[] children = gameObject.GetComponentsInChildren<Transform>();
+		
+		for(int i = 0; i < childCount; i++) {
+			
+			if(((-1) * (Mathf.RoundToInt(children[i].transform.position.y ))) == line){
+				tileMov.GetComponent<Tile_Mov>().eraseInGrid(board, direction, children[i].gameObject);
+				Destroy(children[i].gameObject);
+				Destroy(children[i].gameObject);
+			}
+			
+		}
+	}
 
 	public int [,,] getGrid(){
 		return board;
@@ -49,7 +64,7 @@ public class HolderUpdate : MonoBehaviour {
 		board = gameController.GetComponent<GameController>().getGrid();
 	}
 
-	void Update () {
+	void LateUpdate () {
 		board = gameController.GetComponent<GameController>().getGrid();
         checkGrid(board, direction);
     }
